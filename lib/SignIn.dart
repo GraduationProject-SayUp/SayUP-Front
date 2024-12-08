@@ -33,7 +33,8 @@ class SignInPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // 1. 로고 이미지
-            Image(image: AssetImage("assets/images/logo-grayscale.png")),
+            Image(image: AssetImage("assets/images/logo_grayscale_big.png")),
+            SizedBox(height: 26),
             // 2. 이메일 입력 필드
             TextField(
               decoration: InputDecoration(
