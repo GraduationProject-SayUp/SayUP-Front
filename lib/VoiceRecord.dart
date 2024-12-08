@@ -27,63 +27,63 @@ class VoiceRecordPage extends StatefulWidget {
   const VoiceRecordPage({super.key});
 
   @override
-  _VoiceRecordPageState createState() => _VoiceRecordPageState();
+  VoiceRecordPageState createState() => VoiceRecordPageState();
 }
 
-class _VoiceRecordPageState extends State<VoiceRecordPage> {
-  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording = false;
-  String? _filePath;
-  Timer? _timer; // 타이머 변수 추가
-  String _displayText = "Record Your\nVoice"; // 화면에 표시할 텍스트
+class VoiceRecordPageState extends State<VoiceRecordPage> {
+  final FlutterSoundRecorder recorder = FlutterSoundRecorder();
+  bool isRecording = false;
+  String? filePath;
+  Timer? timer; // 타이머 변수 추가
+  String displayText = "Record Your\nVoice"; // 화면에 표시할 텍스트
 
   @override
   void initState() {
     super.initState();
-    _initRecorder();
+    initRecorder();
   }
 
   // 녹음기 초기화
-  Future<void> _initRecorder() async {
-    await _recorder.openRecorder();
+  Future<void> initRecorder() async {
+    await recorder.openRecorder();
   }
 
   // 녹음 시작
-  Future<void> _startRecording() async {
+  Future<void> startRecording() async {
     setState(() {
-      _displayText = "가족 소개를\n해주세요"; // 텍스트 변경
+      displayText = "가족 소개를\n해주세요"; // 텍스트 변경
     });
 
     final directory = await getApplicationDocumentsDirectory();
-    _filePath = '${directory.path}/recorded_audio.wav'; // 저장될 경로
-    await _recorder.startRecorder(toFile: _filePath);
+    filePath = '${directory.path}/recorded_audio.wav'; // 저장될 경로
+    await recorder.startRecorder(toFile: filePath);
     setState(() {
-      _isRecording = true;
+      isRecording = true;
     });
 
     // 15초 후에 자동으로 녹음을 멈추는 타이머 설정
-    _timer = Timer(Duration(seconds: 15), () {
+    timer = Timer(Duration(seconds: 15), () {
       _stopRecording();
     });
   }
 
   // 녹음 중지
   Future<void> _stopRecording() async {
-    await _recorder.stopRecorder();
-    _timer?.cancel(); // 타이머 취소
+    await recorder.stopRecorder();
+    timer?.cancel(); // 타이머 취소
     setState(() {
-      _isRecording = false;
+      isRecording = false;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Recording saved to $_filePath')),
+      SnackBar(content: Text('Recording saved to $filePath')),
     );
-    _displayText = "준비가 모두\n끝났어요 !!";
+    displayText = "준비가 모두\n끝났어요 !!";
   }
 
   @override
   void dispose() {
-    _recorder.closeRecorder();
-    _timer?.cancel(); // 타이머 해제
+    recorder.closeRecorder();
+    timer?.cancel(); // 타이머 해제
     super.dispose();
   }
 
@@ -99,7 +99,7 @@ class _VoiceRecordPageState extends State<VoiceRecordPage> {
             children: [
               // 텍스트 부분
               Text(
-                _displayText, // 상태에 맞는 텍스트 표시
+                displayText, // 상태에 맞는 텍스트 표시
                 textAlign: TextAlign.center, // 텍스트 가운데 정렬
                 style: TextStyle(
                   fontSize: 48,
@@ -112,8 +112,8 @@ class _VoiceRecordPageState extends State<VoiceRecordPage> {
               // 녹음 버튼
               ElevatedButton(
                 onPressed: () {
-                  if (!_isRecording) {
-                    _startRecording();
+                  if (!isRecording) {
+                    startRecording();
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -124,7 +124,7 @@ class _VoiceRecordPageState extends State<VoiceRecordPage> {
                   ),
                 ),
                 child: Text(
-                  _isRecording ? 'Recording...' : 'Start Recording',
+                  isRecording ? 'Recording...' : 'Start Recording',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
