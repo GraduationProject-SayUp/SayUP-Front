@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sayup/SignUp.dart';  // 회원가입 페이지로 이동하기 위한 import
+import 'package:sayup/DashboardPage.dart';
 
 void main() {
   runApp(const SignInApp());
@@ -70,6 +71,13 @@ class SignInPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // 로그인 버튼 동작
+
+                  // 일단, 로그인 후 DashboardPage로 이동
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DashboardPage()),
+                  );
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

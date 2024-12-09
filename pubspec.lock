@@ -98,26 +98,26 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_sound
-      sha256: d0c9c720f790e2068a5a6f7840f94b03ed5651ee82f43b0aeb9230e1c1ebe55d
+      sha256: "8d003f1aba1a09c970413fee2e742c9fbef434d6f2894e77236ddce4c7c86cd5"
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.5"
+    version: "9.17.8"
   flutter_sound_platform_interface:
     dependency: transitive
     description:
       name: flutter_sound_platform_interface
-      sha256: "95dce405edf19a05a0cca9c31a5a6bf9327223bdc42453ee3bc905ae0e5f519a"
+      sha256: "17cc7c0095fec0ec08eae0bf6b26c1c4735d8401ce0468710f9ba873fb1f65d8"
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.5"
+    version: "9.17.8"
   flutter_sound_web:
     dependency: transitive
     description:
       name: flutter_sound_web
-      sha256: "2efe6de0925766bfaa90c9e6b8d7000fe0cc719b9bb9227642596f35563ba41e"
+      sha256: edd41e486ea8f91851791832b857a2668f9abf9f13e11c947878ccea3d85c257
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.5"
+    version: "9.17.8"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -260,10 +260,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: f234384a3fdd67f989b4d54a5d73ca2a6c422fa55ae694381ae0f4375cd1ea16
+      sha256: "4843174df4d288f5e29185bd6e72a6fbdf5a4a4602717eed565497429f179942"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.4.1"
   path_provider_linux:
     dependency: transitive
     description:
