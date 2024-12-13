@@ -35,11 +35,15 @@ class VoiceRecordPage extends StatefulWidget {
 
 class VoiceRecordPageState extends State<VoiceRecordPage> {
   final FlutterSoundRecorder recorder = FlutterSoundRecorder();
+  final FlutterSoundPlayer player = FlutterSoundPlayer();
   bool isRecording = false;
   bool isUploading = false;
+  bool isPlaying = false;
+  bool isRecordingCompleted = false;  // 녹음 완료 상태
   String? filePath;
-  Timer? timer; // 타이머 변수 추가
-  String displayText = "Record Your\nVoice"; // 화면에 표시할 텍스트
+  Timer? timer;
+  int remainingTime = 15; // 남은 녹음 시간
+  String displayText = "Record Your\nVoice";  // 화면에 표시할 텍스트
 
   @override
   void initState() {
@@ -49,8 +53,6 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
 
   // 녹음기 초기화
   Future<void> initRecorder() async {
-    //await recorder.openRecorder();
-
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,6 +64,7 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
     try {
       await recorder.openRecorder();
       await recorder.setSubscriptionDuration(Duration(milliseconds: 500));
+      await player.openPlayer();
     } catch (e) {
       print('Recorder initialization error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,40 +77,55 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
   Future<void> startRecording() async {
     setState(() {
       displayText = "가족 소개를\n해주세요";
+      remainingTime = 15;
     });
 
     final directory = await getApplicationDocumentsDirectory();
     filePath = '${directory.path}/recorded_audio.wav'; // 저장될 경로
-    await recorder.startRecorder(toFile: filePath);
+    try {
+      await recorder.startRecorder(toFile: filePath);
 
-    setState(() {
-      isRecording = true;
-    });
+      setState(() {
+        isRecording = true;
+      });
 
-    // 15초 후에 자동으로 녹음을 멈추는 타이머 설정
-    timer = Timer(Duration(seconds: 15), () {
-      _stopRecording();
-    });
+      timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+        if (remainingTime > 0) {
+          setState(() {
+            remainingTime -= 1;
+          });
+        } else {
+          _stopRecording();
+        }
+      });
+    } catch (e) {
+      setState(() {
+        displayText = "녹음 시작 실패";
+      });
+      print('Recording error: $e');
+    }
   }
 
   // 녹음 중지
   Future<void> _stopRecording() async {
-    await recorder.stopRecorder();
-    timer?.cancel(); // 타이머 취소
+    try {
+      await recorder.stopRecorder();
+    } catch (e) {
+      print('Stop recording error: $e');
+    }
+    timer?.cancel();
 
     setState(() {
       isRecording = false;
+      isRecordingCompleted = true;  // 녹음 완료 상태 업데이트
+      displayText = "녹음 완료! \n업로드 중...";
       isUploading = true;
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Recording saved to $filePath')),
-    );
 
     try {
       await _uploadAudioFile();
       setState(() {
-        displayText = "준비가 모두\n끝났어요 !!";
+        displayText = "업로드 성공! \n준비가 끝났어요";
         isUploading = false;
       });
     } catch (e) {
@@ -115,9 +133,7 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
         displayText = "업로드 실패";
         isUploading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Upload failed: $e')),
-      );
+      print('Upload error: $e');
     }
   }
 
@@ -143,6 +159,33 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
     }
   }
 
+  Future<void> playRecording() async {
+    if (filePath == null) return;
+
+    try {
+      if (isPlaying) {
+        await player.stopPlayer();
+      } else {
+        await player.startPlayer(
+          fromURI: filePath,
+          whenFinished: () {
+            setState(() {
+              isPlaying = false;
+            });
+          },
+        );
+      }
+      setState(() {
+        isPlaying = !isPlaying;
+      });
+    } catch (e) {
+      print('Playback error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Playback failed')),
+      );
+    }
+  }
+
   @override
   void dispose() {
     recorder.closeRecorder();
@@ -161,51 +204,58 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Voice Recorder', style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+          'Voice Recorder',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.more_vert, color: Colors.white70),
-            onPressed: () {
-              // 추가 옵션 기능 구현 가능
-            },
+            onPressed: () {},
           ),
         ],
       ),
       backgroundColor: Color(0xFF262626),
-      body: Center(  // Scaffold에 Center 위젯으로 전체 콘텐츠 중앙 정렬
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,  // 세로 방향으로 중앙 정렬
-            crossAxisAlignment: CrossAxisAlignment.center, // 가로 방향으로 중앙 정렬
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 텍스트 부분
+              // 상태 텍스트
               Text(
-                displayText, // 상태에 맞는 텍스트 표시
-                textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                displayText,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
+              SizedBox(height: 10),
+              // 남은 시간 텍스트
+              if (isRecording)
+                Text(
+                  "남은 시간: $remainingTime 초",
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
               SizedBox(height: 50),
-
+              // 녹음 버튼
               GestureDetector(
                 onTap: isRecording || isUploading ? null : startRecording,
-                child: Container(
-                  width: 200,
-                  height: 60,
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  width: isRecording ? 80 : 60,
+                  height: isRecording ? 80 : 60,
                   decoration: BoxDecoration(
                     color: isRecording || isUploading
                         ? Colors.grey
-                        : Color(0xFF3A6FF7), // 파란색 버튼
-                    borderRadius: BorderRadius.circular(12),
+                        : Color(0xFF3A6FF7),
+                    shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.25),
@@ -214,20 +264,35 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: Text(
-                      isUploading
-                          ? 'Uploading...'
-                          : (isRecording ? 'Recording...' : 'Start Recording'),
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  child: Icon(
+                    Icons.mic,
+                    size: 30,
+                    color: Colors.white,
                   ),
                 ),
               ),
+              // 녹음이 완료된 경우에만 재생 버튼 표시
+              if (isRecordingCompleted)
+                SizedBox(height: 20),
+              if (isRecordingCompleted)
+                ElevatedButton(
+                  onPressed: isUploading ? null : playRecording,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                      isPlaying ? Colors.redAccent : Color(0xFF3A6FF7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    isPlaying ? 'Stop Playback' : 'Play Recording',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
             ],
           ),
         ),
