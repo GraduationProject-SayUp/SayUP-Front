@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'VoiceRecord.dart'; // 녹음 페이지 import
 import 'Chatting.dart'; // 채팅 페이지 import
 import 'MyPage.dart'; // 마이페이지 import
+import 'RoleplayPage.dart'; // 롤플레이 import
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -76,6 +77,18 @@ class DashboardPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => ChattingPage()),
                   );
                 }
+            ),
+            const SizedBox(height: 20), // 버튼 사이의 간격 추가
+            // Roleplay 버튼 추가
+            _buildStyledButton(
+              context,
+              text: "Go to Roleplay",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RoleplayPage()),
+                );
+              },
             ),
           ],
         ),
