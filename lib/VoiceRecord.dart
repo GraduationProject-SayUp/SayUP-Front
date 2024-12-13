@@ -18,13 +18,14 @@ class VoiceRecordApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFF262626),
+        scaffoldBackgroundColor: const Color(0xFF262626),
       ),
       home: const VoiceRecordPage(),
     );
   }
 }
 
+// VoiceRecordPage: 녹음 화면
 class VoiceRecordPage extends StatefulWidget {
   const VoiceRecordPage({super.key});
 
@@ -56,7 +57,7 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
         SnackBar(content: Text('Microphone permission denied')),
       );
       return;
-  }
+    }
 
     try {
       await recorder.openRecorder();
@@ -152,6 +153,30 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Voice Recorder', style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert, color: Colors.white70),
+            onPressed: () {
+              // 추가 옵션 기능 구현 가능
+            },
+          ),
+        ],
+      ),
+      backgroundColor: Color(0xFF262626),
       body: Center(  // Scaffold에 Center 위젯으로 전체 콘텐츠 중앙 정렬
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -164,32 +189,42 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
                 displayText, // 상태에 맞는 텍스트 표시
                 textAlign: TextAlign.center, // 텍스트 가운데 정렬
                 style: TextStyle(
-                  fontSize: 48,
+                  fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
               SizedBox(height: 50),
 
-              // 녹음 버튼
-              ElevatedButton(
-                onPressed: isRecording || isUploading
-                    ? null
-                    : startRecording,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
+              GestureDetector(
+                onTap: isRecording || isUploading ? null : startRecording,
+                child: Container(
+                  width: 200,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: isRecording || isUploading
+                        ? Colors.grey
+                        : Color(0xFF3A6FF7), // 파란색 버튼
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ),
-                child: Text(
-                  isUploading
-                      ? 'Uploading...'
-                      : (isRecording ? 'Recording...' : 'Start Recording'),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+                  child: Center(
+                    child: Text(
+                      isUploading
+                          ? 'Uploading...'
+                          : (isRecording ? 'Recording...' : 'Start Recording'),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),

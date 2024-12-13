@@ -76,7 +76,7 @@ class _ChatScreenState extends State<ChattingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // AppBar 추가하여 뒤로가기 버튼 구현
-      backgroundColor: Color(0xFF1E1E1E),
+      backgroundColor: Color(0xFF262626),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -128,8 +128,8 @@ class _ChatScreenState extends State<ChattingPage> {
                       // 메시지 컨테이너 디자인
                       decoration: BoxDecoration(
                           color: isUserMessage
-                              ? Color(0xFF4A90E2)  // 사용자 메시지 블루
-                              : Color(0xFF2C2C2C), // 봇 메시지 그레이
+                              ? Color(0xFF4C8BF5)  // 사용자 메시지 블루
+                              : Color(0xFF424242), // 봇 메시지 그레이
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
@@ -163,7 +163,7 @@ class _ChatScreenState extends State<ChattingPage> {
   Widget _buildMessageInputArea() {
     return Container(
       padding: EdgeInsets.all(10),
-      color: Color(0xFF2A2A2A),
+      color: Color(0xFF1F1F1F),
       child: SafeArea(
         child: Row(
           children: [
@@ -171,7 +171,7 @@ class _ChatScreenState extends State<ChattingPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFF3A3A3A),
+                  color: Color(0xFF333333),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
@@ -192,7 +192,7 @@ class _ChatScreenState extends State<ChattingPage> {
             SizedBox(width: 10),
             // 메시지 전송 버튼
             CircleAvatar(
-              backgroundColor: Color(0xFF4A90E2),
+              backgroundColor: Color(0xFF3A6FF7),
               radius: 25,
               child: IconButton(
                 icon: Icon(Icons.send, color: Colors.white),
