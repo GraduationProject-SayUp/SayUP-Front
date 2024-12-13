@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 // 유저가 입력한 메시지를 백엔드 서버에 전송 하는 서비스
 class ChatService {
-  final String apiURL;
+  final String apiURL;  // API endpoint URL
 
   ChatService ({required this.apiURL});
 
