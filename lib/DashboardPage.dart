@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'VoiceRecord.dart'; // 녹음 페이지 import
 import 'Chatting.dart'; // 채팅 페이지 import
+import 'MyPage.dart'; // 마이페이지 import
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -30,6 +31,15 @@ class DashboardPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.white),
         // 선택적으로 오른쪽에 액션 아이콘 추가 가능
         actions: [
+          IconButton(
+            icon: Icon(Icons.person), // 프로필 아이콘
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyPage()),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
