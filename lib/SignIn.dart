@@ -3,6 +3,10 @@ import 'package:sayup/SignUp.dart';  // 회원가입 페이지로 이동하기 �
 import 'package:sayup/DashboardPage.dart';
 import 'package:sayup/service/auth_service.dart';
 import 'package:sayup/widgets/rounded_button.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+// Flutter Secure Storage 인스턴스 생성
+final storage = FlutterSecureStorage();
 
 void main() {
   runApp(const SignInApp());
@@ -38,6 +42,11 @@ class _SignInPageState extends State<SignInPage> {
 
   bool _isLoading = false;
 
+  /// 토큰 저장 메서드
+  Future<void> saveToken(String token) async {
+    await storage.write(key: 'authToken', value: token);
+  }
+
   void _performLogin() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       _showErrorSnackBar('Please enter email and password');
@@ -53,6 +62,9 @@ class _SignInPageState extends State<SignInPage> {
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
+
+      // 로그인 성공 시 토큰 저장
+      await saveToken(token);
 
       setState(() {
         _isLoading = false;

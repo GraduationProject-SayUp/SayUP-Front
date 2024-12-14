@@ -15,6 +15,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
+
       return responseData['token'];
     } else {
       throw Exception('Failed to login: ${response.body}');

@@ -94,30 +94,78 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_secure_storage:
+    dependency: "direct main"
+    description:
+      name: flutter_secure_storage
+      sha256: "165164745e6afb5c0e3e3fcc72a012fb9e58496fb26ffb92cf22e16a821e85d0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.2"
+  flutter_secure_storage_linux:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_linux
+      sha256: "4d91bfc23047422cbcd73ac684bc169859ee766482517c22172c86596bf1464b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
+  flutter_secure_storage_macos:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_macos
+      sha256: "1693ab11121a5f925bbea0be725abfcfbbcf36c1e29e571f84a0c0f436147a81"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
+  flutter_secure_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_platform_interface
+      sha256: cf91ad32ce5adef6fba4d736a542baca9daf3beac4db2d04be350b87f69ac4a8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  flutter_secure_storage_web:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_web
+      sha256: f4ebff989b4f07b2656fb16b47852c0aab9fed9b4ec1c70103368337bc1886a9
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
+  flutter_secure_storage_windows:
+    dependency: transitive
+    description:
+      name: flutter_secure_storage_windows
+      sha256: b20b07cb5ed4ed74fc567b78a72936203f587eba460af1df11281c9326cd3709
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   flutter_sound:
     dependency: "direct main"
     description:
       name: flutter_sound
-      sha256: "8d003f1aba1a09c970413fee2e742c9fbef434d6f2894e77236ddce4c7c86cd5"
+      sha256: "1f40b26b92907a433afe877c927cd48f5a2e4d0f7188e5d39eb5756008aa51ab"
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.8"
+    version: "9.6.0"
   flutter_sound_platform_interface:
     dependency: transitive
     description:
       name: flutter_sound_platform_interface
-      sha256: "17cc7c0095fec0ec08eae0bf6b26c1c4735d8401ce0468710f9ba873fb1f65d8"
+      sha256: "2e218521d8187b9a4c65063ad9c79bfe88119531ff68047a2eaa6b027cb276bb"
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.8"
+    version: "9.6.0"
   flutter_sound_web:
     dependency: transitive
     description:
       name: flutter_sound_web
-      sha256: edd41e486ea8f91851791832b857a2668f9abf9f13e11c947878ccea3d85c257
+      sha256: "5013a15e4e69a4bdc8badd729130eef43c3305e30ba8e6933f863436ce969932"
       url: "https://pub.dev"
     source: hosted
-    version: "9.17.8"
+    version: "9.6.0"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -156,10 +204,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.6.7"
   leak_tracker:
     dependency: transitive
     description:
@@ -469,6 +517,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  win32:
+    dependency: transitive
+    description:
+      name: win32
+      sha256: "8b338d4486ab3fbc0ba0db9f9b4f5239b6697fcee427939a40e720cbb9ee0a69"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.0"
   xdg_directories:
     dependency: transitive
     description:
