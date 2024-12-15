@@ -36,7 +36,8 @@ dependencies:
   flutter_spinkit: ^5.1.0
   permission_handler: ^10.2.0
   flutter_secure_storage: ^9.2.2
-
+  web_socket_channel: ^2.2.0
+  stomp_dart_client: ^0.4.4
 
 
   # The following adds the Cupertino Icons font to your application.

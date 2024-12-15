@@ -16,7 +16,7 @@ class UploaderService {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://10.0.2.2:8080/api/audio/upload'), // 안드로이드 에뮬레이터용 localhost 주소
+      Uri.parse('http://10.0.2.2:8080/api/users/audio'), // 안드로이드 에뮬레이터용 localhost 주소
     );
 
     request.files.add(

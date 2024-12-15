@@ -38,7 +38,7 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
 
   Future<void> startRecording() async {
     setState(() {
-      displayText = "가족 소개를\n해주세요";
+      displayText = "자기소개를\n해주세요";
       remainingTime = 15;
       isRecording = true;
     });
