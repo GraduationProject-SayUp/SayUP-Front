@@ -16,20 +16,21 @@ class UploaderService {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://10.0.2.2:8000/upload'), // 안드로이드 에뮬레이터용 localhost 주소
+      Uri.parse('http://10.0.2.2:8080/api/audio/upload'), // 안드로이드 에뮬레이터용 localhost 주소
     );
 
     request.files.add(
       await http.MultipartFile.fromPath(
         'file',
         filePath,
-        filename: 'recorded_audio.wav',
+        //filename: 'recorded_audio.wav',
       ),
     );
 
     // Authorization 헤더에 Bearer 토큰 추가
     request.headers.addAll({
       'Authorization': 'Bearer $token',
+      'Content-Type': 'multipart/form-data',
     });
 
     var response = await request.send();
@@ -37,7 +38,9 @@ class UploaderService {
     if (response.statusCode == 200) {
       print('Upload successful');
     } else {
-      throw Exception('Upload failed with status code: ${response.statusCode}');
+      print('Upload failed with status code: ${response.statusCode}');
+      var responseBody = await response.stream.bytesToString();
+      throw Exception('Upload failed: $responseBody');
     }
   }
 }
