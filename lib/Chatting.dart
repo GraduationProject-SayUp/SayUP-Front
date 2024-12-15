@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChattingPage> {
     _controller.clear();
 
     try {
-      final botResponse = await _chatService.sendMessage(userMessage);
+      final botResponse = await _chatService.sendMessageToApi(userMessage);
       setState(() {
         messages.add({'sender': 'bot', 'message': botResponse});
       });
