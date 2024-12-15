@@ -1,27 +1,38 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
+// 유저가 입력한 메시지를 백엔드 서버에 전송 하는 서비스
 class ChatService {
-  final String _baseUrl = "http://127.0.0.1:8080/api/chat/generate"; // Spring Boot 백엔드 주소 (ios 시뮬레이터의 경우 127.0.0.1:8080) / 안드로이드 애뮬레이터의 경우 10.0.2.2:8080
+  final String apiURL = 'http://127.0.0.1:8080/api/chat/generate';  // API endpoint URL (ios 애뮬레이터 -> 127.0.0.1 안드로이드 애뮬레이터 -> 10.0.0.2)
 
-  Future<String> sendMessage(String userMessage) async {
+  // OpenAI API로 유저가 입력한 채팅 메시지 전달
+  Future<String> sendMessageToApi(String userMessage) async {
     try {
-      // HTTP POST 요청 생성
       final response = await http.post(
-        Uri.parse("$_baseUrl?message=$userMessage"), // 쿼리 파라미터로 메시지 전달
+        Uri.parse('$apiURL?message=${Uri.encodeComponent(userMessage)}'), // 쿼리 파라미터로 message 추가
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
+        body: json.encode({
+          'message': userMessage,
+        }),
       );
 
       if (response.statusCode == 200) {
-        // 응답이 성공적일 경우
-        return response.body; // 백엔드에서 content 값만 반환
-      } else {
-        throw Exception("Failed to load response: ${response.statusCode}");
+        try {
+          // JSON 형식일 경우만 파싱
+          final responseData = json.decode(response.body);
+          return responseData['response'];
+        } catch (e) {
+          // JSON이 아니면 그냥 문자열 그대로 반환
+          return response.body;
+        }
+      } else { // 응답 실패 시 반환 되는 값
+        return 'Failed to get a response from the server.';
       }
     } catch (e) {
-      print("Error: $e");
-      return "Error occurred while fetching response.";
+      return 'Error occurred: $e';
     }
   }
 }

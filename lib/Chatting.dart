@@ -273,8 +273,8 @@ class ChattingPage extends StatefulWidget {
 
 class _ChatScreenState extends State<ChattingPage> {
   final TextEditingController _controller = TextEditingController();
-  final ChatService _chatService = ChatService(); // 백엔드 주소 설정
-  final ScrollController _scrollController = ScrollController();
+  final ChatService _chatService = ChatService();
+  final ScrollController _scrollController = ScrollController(); // 스크롤 컨트롤러 추가
   List<Map<String, String>> messages = [];
 
   // 메시지 보내기
@@ -282,34 +282,34 @@ class _ChatScreenState extends State<ChattingPage> {
     final userMessage = _controller.text;
     if (userMessage.isEmpty) return;
 
-    // 사용자의 메시지를 화면에 추가
     setState(() {
-      messages.add({'sender': 'user', 'message': userMessage});
+      messages.add({
+        'sender': 'user',
+        'message': userMessage,
+      });
     });
 
     _controller.clear();
 
-    // 백엔드 호출 및 응답 처리
-    try {
-      final botResponse = await _chatService.sendMessage(userMessage);
+    // 백엔드 서버에 메시지 보내기
+    String botResponse = await _chatService.sendMessageToApi(userMessage);
 
-      setState(() {
-        messages.add({'sender': 'bot', 'message': botResponse});
+    setState(() {
+      messages.add({
+        'sender': 'bot',
+        'message': botResponse,
       });
-    } catch (e) {
-      setState(() {
-        messages.add({'sender': 'bot', 'message': 'Error occurred while fetching the response!'});
-      });
-    }
+    });
 
-    // 스크롤을 자동으로 아래로 이동
+    // 메시지 보내고 난 후, 스크롤을 자동으로 맨 아래로 이동
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
   }
 
-  // 자동 스크롤
+  // 자동으로 스크롤을 맨 아래로 이동
   void _scrollToBottom() {
+    // 스크롤이 끝에 있을 때만 애니메이션을 추가
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -322,28 +322,31 @@ class _ChatScreenState extends State<ChattingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AppBar 추가하여 뒤로가기 버튼 구현
       backgroundColor: Color(0xFF262626),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white70), // 뒤로가기 아이콘
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Free Talking',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text('Chatting', style: TextStyle
+          (color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white70),
-            onPressed: () {},
+          // 더보기 옵션 아이콘
+          IconButton(icon: Icon(Icons.more_vert, color: Colors.white70),
+            onPressed: () {
+              // 추가 옵션 메뉴 구현 가능
+            },
           ),
         ],
       ),
+
       body: Column(
         children: [
-          // 메시지 리스트
+          // 메시지 리스트 영역
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -356,33 +359,37 @@ class _ChatScreenState extends State<ChattingPage> {
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Align(
-                    alignment:
-                    isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+                    // 메시지 정렬 (사용자/봇에 따라 다름)
+                    alignment: isUserMessage
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
                     child: Container(
+                      // 메시지 최대 너비 제한
                       constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.7,
                       ),
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 10
+                      ),
+                      // 메시지 컨테이너 디자인
                       decoration: BoxDecoration(
-                        color: isUserMessage
-                            ? Color(0xFF4C8BF5)
-                            : Color(0xFF424242),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 5,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
+                          color: isUserMessage
+                              ? Color(0xFF4C8BF5)  // 사용자 메시지 블루
+                              : Color(0xFF424242), // 봇 메시지 그레이
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 5,
+                                offset: Offset(0, 2)
+                            )
+                          ]
                       ),
                       child: Text(
                         message['message']!,
                         style: TextStyle(
-                          color: isUserMessage
-                              ? Colors.white
-                              : Colors.white70,
+                          color: isUserMessage ? Colors.white : Colors.white70,
                           fontSize: 16,
                         ),
                       ),
@@ -399,7 +406,7 @@ class _ChatScreenState extends State<ChattingPage> {
     );
   }
 
-  // 입력 영역
+  // 메시지 입력 위젯 빌더
   Widget _buildMessageInputArea() {
     return Container(
       padding: EdgeInsets.all(10),
@@ -407,6 +414,7 @@ class _ChatScreenState extends State<ChattingPage> {
       child: SafeArea(
         child: Row(
           children: [
+            // 메시지 입력 텍스트 필드
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -421,14 +429,15 @@ class _ChatScreenState extends State<ChattingPage> {
                     hintStyle: TextStyle(color: Colors.white54),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
+                        horizontal: 20,
+                        vertical: 10
                     ),
                   ),
                 ),
               ),
             ),
             SizedBox(width: 10),
+            // 메시지 전송 버튼
             CircleAvatar(
               backgroundColor: Color(0xFF3A6FF7),
               radius: 25,
@@ -442,5 +451,3 @@ class _ChatScreenState extends State<ChattingPage> {
       ),
     );
   }
-}
-*/
