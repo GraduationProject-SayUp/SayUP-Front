@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 // 유저가 입력한 메시지를 백엔드 서버에 전송 하는 서비스
 class ChatService {
-  final String apiURL = 'http://127.0.0.1:8080/api/chat/generate';  // API endpoint URL (ios 애뮬레이터 -> 127.0.0.1 안드로이드 애뮬레이터 -> 10.0.0.2)
+  final String apiURL = 'http://127.0.0.1:8080/api/chat/generate';  // API endpoint URL (ios 애뮬레이터 -> 127.0.0.1 안드로이드 애뮬레이터 -> 10.0.2.2)
 
   // OpenAI API로 유저가 입력한 채팅 메시지 전달
   Future<String> sendMessageToApi(String userMessage) async {
