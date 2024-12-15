@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'SignIn.dart';  // SignInPage가 있는 파일을 import합니다.
+import 'SignIn.dart'; // SignInPage import
+import 'MyPage.dart'; // MyPage import
 
 void main() {
   runApp(const FigmaToCodeApp());
@@ -12,10 +13,16 @@ class FigmaToCodeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFF262626),
       ),
-      home: LoadingPage(),
+      initialRoute: '/', // 초기 경로 설정
+      routes: {
+        '/': (context) => LoadingPage(), // 로딩 페이지
+        '/login': (context) => SignInPage(), // 로그인 페이지
+        '/mypage': (context) => MyPage(), // 마이 페이지
+      },
     );
   }
 }
@@ -25,10 +32,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 2초 후에 SignInPage로 이동
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SignInPage()),  // SignInPage로 이동
-      );
+      Navigator.pushReplacementNamed(context, '/login'); // 로그인 페이지로 이동
     });
 
     return Scaffold(

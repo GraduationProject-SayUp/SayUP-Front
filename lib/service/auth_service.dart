@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 class AuthService {
   final String _baseLoginUrl = 'http://10.0.2.2:8080/api/auth/login';
   final String _baseRegisterUrl = 'http://10.0.2.2:8080/api/auth/register';
+  final String _baseLogoutUrl = 'http://10.0.2.2:8080/api/auth/logout';
 
   /// 로그인 메서드
   Future<String> login(String email, String password) async {
