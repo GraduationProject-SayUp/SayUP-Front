@@ -1,7 +1,25 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:sayup/service/auth_service.dart';
 
 class MyPage extends StatelessWidget {
-  const MyPage({super.key});
+  MyPage({super.key});
+
+  final AuthService _authService = AuthService();
+
+  /// 로그아웃 메서드
+  Future<void> _logout(BuildContext context) async {
+    try {
+      await _authService.logout();
+      // 로그인 화면으로 이동
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (error) {
+      // 오류 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logout failed: $error')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +110,7 @@ class MyPage extends StatelessWidget {
                 'Log Out',
                 style: TextStyle(color: Colors.redAccent, fontSize: 16),
               ),
-              onTap: () {
-                // 로그아웃 동작 구현
-              },
+              onTap: () => _logout(context), // 로그아웃 메서드 호출
             ),
           ],
         ),
