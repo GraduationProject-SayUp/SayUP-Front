@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sayup/service/chat_service.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt; // 음성 인식 패키지 추가
 
 void main() {
   runApp(const Chatting());
@@ -26,26 +27,58 @@ class ChattingPage extends StatefulWidget {
 
 class _ChatScreenState extends State<ChattingPage> {
   final TextEditingController _controller = TextEditingController();
-  final ChatService _chatService = ChatService(); // 백엔드 주소 설정
+  final ChatService _chatService = ChatService();
   final ScrollController _scrollController = ScrollController();
-  List<Map<String, String>> messages = [];
 
-  // 메시지 보내기
+  List<Map<String, String>> messages = [];
+  late stt.SpeechToText _speech; // 음성 인식 객체
+  bool _isListening = false; // 현재 듣고 있는지 여부
+  String _lastRecognizedWords = ""; // 마지막으로 인식한 텍스트
+
+  @override
+  void initState() {
+    super.initState();
+    _speech = stt.SpeechToText(); // 음성 인식 초기화
+  }
+
+  // 음성 인식 시작
+  void _startListening() async {
+    if (!_isListening && await _speech.initialize()) {
+      setState(() => _isListening = true);
+
+      _speech.listen(
+        localeId: 'ko_KR', // 한국어로 언어 설정
+        onResult: (result) {
+          setState(() {
+            _lastRecognizedWords = result.recognizedWords; // 음성을 텍스트로 변환
+            _controller.text = _lastRecognizedWords; // 입력 필드에 채우기
+          });
+        },
+      );
+    }
+  }
+
+  // 음성 인식 중지
+  void _stopListening() {
+    if (_isListening) {
+      setState(() => _isListening = false);
+      _speech.stop();
+    }
+  }
+
+  // 메시지 전송
   void _sendMessage() async {
     final userMessage = _controller.text;
     if (userMessage.isEmpty) return;
 
-    // 사용자의 메시지를 화면에 추가
     setState(() {
       messages.add({'sender': 'user', 'message': userMessage});
     });
 
     _controller.clear();
 
-    // 백엔드 호출 및 응답 처리
     try {
-      final botResponse = await _chatService.sendMessage(userMessage);
-
+      final botResponse = await _chatService.sendMessageToApi(userMessage);
       setState(() {
         messages.add({'sender': 'bot', 'message': botResponse});
       });
@@ -55,7 +88,6 @@ class _ChatScreenState extends State<ChattingPage> {
       });
     }
 
-    // 스크롤을 자동으로 아래로 이동
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
@@ -182,6 +214,20 @@ class _ChatScreenState extends State<ChattingPage> {
               ),
             ),
             SizedBox(width: 10),
+            // 녹음 버튼
+            CircleAvatar(
+              backgroundColor: Color(0xFF3A6FF7),
+              radius: 25,
+              child: IconButton(
+                icon: Icon(
+                  _isListening ? Icons.mic : Icons.mic_none, // 상태에 따라 아이콘 변경
+                  color: Colors.white,
+                ),
+                onPressed: _isListening ? _stopListening : _startListening,
+              ),
+            ),
+            SizedBox(width: 10),
+            // 보내기 버튼
             CircleAvatar(
               backgroundColor: Color(0xFF3A6FF7),
               radius: 25,
