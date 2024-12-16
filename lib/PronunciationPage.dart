@@ -82,10 +82,13 @@ class _PronunciationPracticePageState
         var jsonResponse = jsonDecode(responseBody);
 
         setState(() {
-          // 피드백이 Map으로 들어올 수 있으므로 적절히 처리
-          _pronunciationFeedback = jsonResponse['feedback'] != null
-              ? jsonResponse['feedback']['original_text'] ?? '피드백을 받을 수 없습니다.'
-              : '피드백을 받을 수 없습니다.';
+          if (jsonResponse['feedback'] != null) {
+            _pronunciationFeedback = '표준발음: ${jsonResponse['feedback']['original_text']}\n'
+                '사용자발음: ${jsonResponse['feedback']['recognized_text']}\n'
+                '음절 누락(Feedback): ${jsonResponse['feedback']['missing_feedback']}';
+          } else {
+            _pronunciationFeedback = 'No feedback available';
+          }
 
           // 발음 점수 처리
           _pronunciationScore = (jsonResponse['score'] as num?)?.toDouble() ?? 0.0;
@@ -314,7 +317,9 @@ class _PronunciationPracticePageState
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Text(
-          'Feedback: Your pronunciation is almost perfect! Try to focus on clearer ending sounds.',
+          _pronunciationFeedback.isNotEmpty
+              ? 'Feedback: $_pronunciationFeedback'
+              : 'Feedback: No feedback available.', // 피드백이 없다면 기본 메시지
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.greenAccent,
