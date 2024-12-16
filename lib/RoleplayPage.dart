@@ -9,7 +9,7 @@ class RoleplayPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
           'Roleplay',
           style: TextStyle(
