@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'service/recorder_service.dart'; // RecorderService import
+import 'package:http/http.dart' as http;
 
 class PronunciationPracticePage extends StatefulWidget {
   const PronunciationPracticePage({super.key});
@@ -11,6 +14,8 @@ class PronunciationPracticePage extends StatefulWidget {
 
 class _PronunciationPracticePageState
     extends State<PronunciationPracticePage> {
+  String _pronunciationFeedback = ''; // 피드백을 저장할 변수
+  double _pronunciationScore = 0.0;   // 발음 점수를 저장할 변
   final RecorderService _recorderService = RecorderService();
   bool _isRecording = false;
 
@@ -35,7 +40,10 @@ class _PronunciationPracticePageState
   Future<void> _toggleRecording() async {
     try {
       if (_isRecording) {
-        await _recorderService.stopRecording();
+        String? recordedFilePath = await _recorderService.stopRecording();
+        print("녹음된 파일 경로: $recordedFilePath");
+        // 녹음이 중지되면 서버로 전송
+        await _sendRecordingToServer(recordedFilePath);
       } else {
         await _recorderService.startRecording();
       }
@@ -48,7 +56,47 @@ class _PronunciationPracticePageState
       );
     }
   }
+  Future<void> _sendRecordingToServer(String? filePath) async {
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('http://192.168.0.103:8000/evaluate-pronunciation'),
+      );
 
+      // 녹음 파일 추가
+      if (filePath != null) {
+        request.files.add(await http.MultipartFile.fromPath('file', filePath));
+      } else {
+        print('파일 경로가 null입니다.');
+        return;
+      }
+      // 발음 비교를 위한 텍스트 (필요에 따라 사용자 입력값을 전달)
+      request.fields['text'] = '안녕하세요 반갑습니다';
+
+      // 요청 보내기
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        print('서버 응답: $responseBody');
+        var jsonResponse = jsonDecode(responseBody);
+
+        setState(() {
+          // 피드백이 Map으로 들어올 수 있으므로 적절히 처리
+          _pronunciationFeedback = jsonResponse['feedback'] != null
+              ? jsonResponse['feedback']['original_text'] ?? '피드백을 받을 수 없습니다.'
+              : '피드백을 받을 수 없습니다.';
+
+          // 발음 점수 처리
+          _pronunciationScore = (jsonResponse['score'] as num?)?.toDouble() ?? 0.0;
+        });
+      } else {
+        print('파일 업로드 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('서버로 파일 전송 중 오류: $e');
+    }
+  }
   @override
   void dispose() {
     _recorderService.dispose();
@@ -85,10 +133,10 @@ class _PronunciationPracticePageState
             children: [
               const SizedBox(height: 20),
               Text(
-                '안녕',
+                '안녕하세요 반갑습니다',
                 style: TextStyle(
                   color: Color(0xFFFFFFFF),
-                  fontSize: 52,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                 ),
@@ -226,7 +274,7 @@ class _PronunciationPracticePageState
             ),
             const SizedBox(height: 15),
             Text(
-              '85%',
+              '${(_pronunciationScore).toStringAsFixed(0)}%', // 점수 표시
               style: TextStyle(
                 color: Colors.greenAccent,
                 fontSize: 36,
@@ -237,7 +285,7 @@ class _PronunciationPracticePageState
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
-                value: 0.85,
+                value: (_pronunciationScore/100).clamp(0.0, 1.0), // 0.0 ~ 1.0 범위로 조정
                 backgroundColor: Colors.grey[800],
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
                 minHeight: 10,

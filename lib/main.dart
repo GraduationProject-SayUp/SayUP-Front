@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sayup/PronunciationPage.dart';
 import 'SignIn.dart'; // SignInPage import
 import 'MyPage.dart'; // MyPage import
 
@@ -22,6 +23,7 @@ class FigmaToCodeApp extends StatelessWidget {
         '/': (context) => LoadingPage(), // 로딩 페이지
         '/login': (context) => SignInPage(), // 로그인 페이지
         '/mypage': (context) => MyPage(), // 마이 페이지
+        '/pro': (context) =>PronunciationPracticePage(),
       },
     );
   }
@@ -32,7 +34,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 2초 후에 SignInPage로 이동
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/login'); // 로그인 페이지로 이동
+      Navigator.pushReplacementNamed(context, '/pro'); // 로그인 페이지로 이동
     });
 
     return Scaffold(
