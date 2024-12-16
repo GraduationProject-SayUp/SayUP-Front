@@ -58,6 +58,7 @@ class _PronunciationPracticePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF262626),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -67,6 +68,7 @@ class _PronunciationPracticePageState
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.5,
+            fontWeight: FontWeight.w600,
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
@@ -75,67 +77,145 @@ class _PronunciationPracticePageState
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: Color(0xFF262626),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            Text(
-              '안녕',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                children: [
-                  Text(
-                    'Lip Shape Analysis',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    height: 150,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'User Lip Shape Feed Here',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            CircleAvatar(
-              radius: 35,
-              backgroundColor: _isRecording
-                  ? Colors.redAccent
-                  : Color(0xFF4C8BF5), // 녹음 상태에 따른 색상 변화
-              child: IconButton(
-                icon: Icon(
-                  _isRecording ? Icons.stop : Icons.mic,
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                '안녕',
+                style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontSize: 52,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
                 ),
-                iconSize: 30,
-                onPressed: _toggleRecording,
+              ),
+              const SizedBox(height: 30),
+              _buildLipShapeAnalysisCard(),
+              const SizedBox(height: 30),
+              _buildRecordingButton(),
+              const SizedBox(height: 30),
+              _buildPronunciationScoreCard(),
+              const SizedBox(height: 20),
+              _buildFeedbackCard(),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLipShapeAnalysisCard() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color(0xFF333333),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Lip Shape Analysis',
+              style: TextStyle(
+                color: Color(0xFF4C8BF5),
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
+            Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xFF3A3A3A),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  'User Lip Shape Feed Here',
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecordingButton() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      width: 80,
+      height: 80,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _isRecording
+            ? Color(0xFFFF4E4E)  // 밝은 빨간색
+            : Color(0xFF4C8BF5), // 기존 파란색
+        boxShadow: [
+          BoxShadow(
+            color: _isRecording
+                ? Color(0xFFFF4E4E).withOpacity(0.4)
+                : Color(0xFF4C8BF5).withOpacity(0.4),
+            blurRadius: 15,
+            offset: Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(40),
+          onTap: _toggleRecording,
+          child: Center(
+            child: Icon(
+              _isRecording ? Icons.stop : Icons.mic,
+              color: Colors.white,
+              size: 40,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPronunciationScoreCard() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color(0xFF333333),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
             Text(
               'Your Pronunciation Score:',
               style: TextStyle(
@@ -144,52 +224,55 @@ class _PronunciationPracticePageState
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Column(
-                children: [
-                  Text(
-                    '85%', // 점수를 숫자로 표시
-                    style: TextStyle(
-                      color: Colors.greenAccent,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  LinearProgressIndicator(
-                    value: 0.85, // 예시 점수: 85%
-                    backgroundColor: Colors.grey[800],
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                    minHeight: 20,
-                  ),
-                ],
+            const SizedBox(height: 15),
+            Text(
+              '85%',
+              style: TextStyle(
+                color: Colors.greenAccent,
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Card(
-                color: Color(0xFF333333),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    'Feedback: Your pronunciation is almost perfect! Try to focus on clearer ending sounds.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.greenAccent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
+            const SizedBox(height: 15),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: LinearProgressIndicator(
+                value: 0.85,
+                backgroundColor: Colors.grey[800],
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                minHeight: 10,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeedbackCard() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color(0xFF333333),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          'Feedback: Your pronunciation is almost perfect! Try to focus on clearer ending sounds.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.greenAccent,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
