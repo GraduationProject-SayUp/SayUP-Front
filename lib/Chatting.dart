@@ -105,7 +105,10 @@ class _ChatScreenState extends State<ChattingPage> {
         });
       } catch (e) {
         setState(() {
-          messages.add({'sender': 'bot', 'message': 'Error occurred while fetching the response!'});
+          messages.add({
+            'sender': 'bot',
+            'message': 'Error occurred while fetching the response!'
+          });
         });
       }
     }
@@ -129,7 +132,8 @@ class _ChatScreenState extends State<ChattingPage> {
 
       String savePath = '${directory.path}/$word.wav';
 
-      File? audioFile = await _conversionService.convertTextToVoice(token: token, sentence: word, savePath: savePath);
+      File? audioFile = await _conversionService.convertTextToVoice(
+          token: token, sentence: word, savePath: savePath);
 
       if (audioFile != null) {
         setState(() {
@@ -171,14 +175,24 @@ class _ChatScreenState extends State<ChattingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF262626),
+      backgroundColor: Color(0xFF262626),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
           'Free Talking',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert, color: Colors.white70),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -242,34 +256,61 @@ class _ChatScreenState extends State<ChattingPage> {
     );
   }
 
+
   // 입력 영역
   Widget _buildMessageInputArea() {
     return Container(
-      padding: const EdgeInsets.all(10),
-      color: const Color(0xFF1F1F1F),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                hintText: 'Type a message...',
-                hintStyle: TextStyle(color: Colors.white54),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.all(10),
+      color: Color(0xFF1F1F1F),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF333333),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Type a message...',
+                    hintStyle: TextStyle(color: Colors.white54),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          IconButton(
-            icon: Icon(_isListening ? Icons.mic : Icons.mic_none, color: Colors.white),
-            onPressed: _isListening ? _stopListening : _startListening,
-          ),
-          IconButton(
-            icon: const Icon(Icons.send, color: Colors.white),
-            onPressed: _sendMessage,
-          ),
-        ],
+            SizedBox(width: 10),
+            // 녹음 버튼
+            CircleAvatar(
+              backgroundColor: Color(0xFF3A6FF7),
+              radius: 25,
+              child: IconButton(
+                icon: Icon(
+                  _isListening ? Icons.mic : Icons.mic_none, // 상태에 따라 아이콘 변경
+                  color: Colors.white,
+                ),
+                onPressed: _isListening ? _stopListening : _startListening,
+              ),
+            ),
+            SizedBox(width: 10),
+            // 보내기 버튼
+            CircleAvatar(
+              backgroundColor: Color(0xFF3A6FF7),
+              radius: 25,
+              child: IconButton(
+                icon: Icon(Icons.send, color: Colors.white),
+                onPressed: _sendMessage,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
