@@ -17,7 +17,7 @@ class ChatService {
       }
 
       final response = await http.post(
-        Uri.parse('$apiURL?message=${Uri.encodeComponent(userMessage)}'),
+        Uri.parse(apiURL),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token', // 토큰 추가

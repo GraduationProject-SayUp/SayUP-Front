@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ConversionService {
-  final String apiURL = 'http://10.0.0.2:8080/api/voice/conversion';
+  final String apiURL = 'http://10.0.2.2:8080/api/voice/conversion';
 
   // 텍스트를 서버로 보내고 오디오 파일을 받아오는 함수
   Future<File?> convertTextToVoice({
