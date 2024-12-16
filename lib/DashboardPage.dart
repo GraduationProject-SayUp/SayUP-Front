@@ -3,6 +3,7 @@ import 'VoiceRecord.dart'; // 녹음 페이지 import
 import 'Chatting.dart'; // 채팅 페이지 import
 import 'MyPage.dart'; // 마이페이지 import
 import 'RoleplayPage.dart'; // 롤플레이 import
+import 'PronunciationPage.dart'; // 발음 연습 페이지 import
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -10,15 +11,10 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 기존 AppBar 대신 커스텀 앱바 디자인
       appBar: AppBar(
-        // 배경색을 투명으로 설정
         backgroundColor: Colors.transparent,
-        // 그림자 제거
         elevation: 0,
-        // 앱바 제목을 가운데 정렬
         centerTitle: true,
-        // 앱바 타이틀 스타일링
         title: Text(
           'Dashboard',
           style: TextStyle(
@@ -77,6 +73,18 @@ class DashboardPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => ChattingPage()),
                   );
                 }
+            ),
+            const SizedBox(height: 20),
+            _buildStyledButton(
+              context,
+              text: "Go to Pronunciation",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PronunciationPracticePage()),
+                );
+              }
             ),
             const SizedBox(height: 20), // 버튼 사이의 간격 추가
             // Roleplay 버튼 추가
