@@ -6,6 +6,25 @@ class RoleplayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          'Roleplay',
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       backgroundColor: Color(0xFF262626),
       body: SafeArea(
         child: Column(
