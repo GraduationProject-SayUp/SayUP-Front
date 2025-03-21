@@ -25,33 +25,32 @@ class MyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'My Page',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF6C63FF), // 보라색 텍스트
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
       ),
-      backgroundColor: Color(0xFF262626),
+      backgroundColor: Color(0xFFF5F5F5), // 밝은 회색 배경
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 프로필 섹션
             Row(
               children: [
                 CircleAvatar(
                   radius: 40,
-                  backgroundColor: Color(0xFF3A6FF7),
+                  backgroundColor: Color(0xFF6C63FF), // 보라색 배경
                   child: Icon(Icons.person, size: 40, color: Colors.white),
                 ),
                 SizedBox(width: 16),
@@ -61,7 +60,7 @@ class MyPage extends StatelessWidget {
                     Text(
                       'John',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color(0xFF333333), // 어두운 회색 텍스트
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -70,7 +69,7 @@ class MyPage extends StatelessWidget {
                     Text(
                       'John@example.com',
                       style: TextStyle(
-                        color: Colors.white70,
+                        color: Color(0xFF666666), // 중간 회색 텍스트
                         fontSize: 14,
                       ),
                     ),
@@ -79,38 +78,33 @@ class MyPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: 30),
-            // 메뉴 섹션
             ListTile(
-              leading: Icon(Icons.settings, color: Colors.white),
+              leading: Icon(Icons.settings, color: Color(0xFF6C63FF)), // 보라색 아이콘
               title: Text(
                 'Settings',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(color: Color(0xFF333333), fontSize: 16), // 어두운 회색 텍스트
               ),
-              trailing: Icon(Icons.arrow_forward_ios, color: Colors.white54),
-              onTap: () {
-                // 설정 페이지로 이동
-              },
+              trailing: Icon(Icons.arrow_forward_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
+              onTap: () {},
             ),
-            Divider(color: Colors.white24),
+            Divider(color: Colors.grey[300]), // 밝은 회색 구분선
             ListTile(
-              leading: Icon(Icons.help_outline, color: Colors.white),
+              leading: Icon(Icons.help_outline, color: Color(0xFF6C63FF)), // 보라색 아이콘
               title: Text(
                 'Help',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(color: Color(0xFF333333), fontSize: 16), // 어두운 회색 텍스트
               ),
-              trailing: Icon(Icons.arrow_forward_ios, color: Colors.white54),
-              onTap: () {
-                // 도움말 페이지로 이동
-              },
+              trailing: Icon(Icons.arrow_forward_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
+              onTap: () {},
             ),
-            Divider(color: Colors.white24),
+            Divider(color: Colors.grey[300]), // 밝은 회색 구분선
             ListTile(
               leading: Icon(Icons.logout, color: Colors.redAccent),
               title: Text(
                 'Log Out',
                 style: TextStyle(color: Colors.redAccent, fontSize: 16),
               ),
-              onTap: () => _logout(context), // 로그아웃 메서드 호출
+              onTap: () => _logout(context),
             ),
           ],
         ),
@@ -118,3 +112,5 @@ class MyPage extends StatelessWidget {
     );
   }
 }
+
+

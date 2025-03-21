@@ -44,9 +44,11 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F5F5), // 밝은 회색 배경
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -54,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             const Text(
               "Register",
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xFF6C63FF)), // 보라색 텍스트
             ),
             const SizedBox(height: 50),
             InputField(controller: emailController, hintText: "Enter your email"),
@@ -68,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Already have an account?", style: TextStyle(color: Colors.white)),
+                const Text("Already have an account?", style: TextStyle(color: Color(0xFF333333))), // 어두운 회색 텍스트
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -76,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       MaterialPageRoute(builder: (context) => const SignInPage()),
                     );
                   },
-                  child: const Text("Login", style: TextStyle(color: Colors.white)),
+                  child: const Text("Login", style: TextStyle(color: Color(0xFF6C63FF))), // 보라색 텍스트
                 ),
               ],
             ),
@@ -85,12 +87,5 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
 }
+

@@ -114,26 +114,27 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Voice Recorder',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF6C63FF), // 보라색 텍스트
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
       ),
-      backgroundColor: const Color(0xFF262626),
+      backgroundColor: const Color(0xFFF5F5F5), // 밝은 회색 배경
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -146,14 +147,14 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
                 style: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Color(0xFF333333), // 어두운 회색 텍스트
                 ),
               ),
               const SizedBox(height: 10),
               if (isRecording)
                 Text(
                   "남은 시간: $remainingTime 초",
-                  style: const TextStyle(fontSize: 16, color: Colors.white70),
+                  style: const TextStyle(fontSize: 16, color: Color(0xFF666666)), // 중간 회색 텍스트
                 ),
               const SizedBox(height: 50),
               GestureDetector(
@@ -165,7 +166,7 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
                   decoration: BoxDecoration(
                     color: isRecording || isUploading
                         ? Colors.grey
-                        : const Color(0xFF3A6FF7),
+                        : const Color(0xFF6C63FF), // 보라색
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.mic, color: Colors.white),
@@ -180,11 +181,11 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
                     width: 200,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: isPlaying ? Colors.redAccent : const Color(0xFF3A6FF7),
+                      color: isPlaying ? Colors.redAccent : const Color(0xFF6C63FF), // 보라색
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withOpacity(0.1), // 부드러운 그림자
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -209,3 +210,4 @@ class VoiceRecordPageState extends State<VoiceRecordPage> {
     );
   }
 }
+

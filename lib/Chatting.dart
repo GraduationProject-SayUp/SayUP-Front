@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChattingPage> {
     _playerService.initializePlayer(); // 재생기 초기화
   }
 
+
   @override
   void dispose() {
     _playerService.dispose();
@@ -116,8 +117,7 @@ class _ChatScreenState extends State<ChattingPage> {
     // 프레임 렌더링 후 스크롤 이동
     _scrollToBottom();
   }
-
-  // 발음 요청 처리
+// 발음 요청 처리
   Future<void> _handlePronunciationRequest(String word) async {
     final String? token = await storage.read(key: 'authToken');
 
@@ -171,25 +171,26 @@ class _ChatScreenState extends State<ChattingPage> {
     });
   }
 
-  // 메시지 UI
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF262626),
+      backgroundColor: Color(0xFFF5F5F5), // 밝은 회색 배경
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Free Talking',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color(0xFF6C63FF), fontWeight: FontWeight.bold), // 보라색 텍스트
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white70),
+            icon: Icon(Icons.more_vert, color: Color(0xFF6C63FF)), // 보라색 아이콘
             onPressed: () {},
           ),
         ],
@@ -220,8 +221,8 @@ class _ChatScreenState extends State<ChattingPage> {
                               horizontal: 15, vertical: 10),
                           decoration: BoxDecoration(
                             color: isUserMessage
-                                ? const Color(0xFF4C8BF5)
-                                : const Color(0xFF424242),
+                                ? const Color(0xFF6C63FF) // 보라색
+                                : const Color(0xFFE0E0E0), // 밝은 회색
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Text(
@@ -229,14 +230,14 @@ class _ChatScreenState extends State<ChattingPage> {
                             style: TextStyle(
                               color: isUserMessage
                                   ? Colors.white
-                                  : Colors.white70,
+                                  : Color(0xFF333333), // 어두운 회색 텍스트
                               fontSize: 16,
                             ),
                           ),
                         ),
                         if (message['audioPath'] != null)
                           IconButton(
-                            icon: const Icon(Icons.play_arrow, color: Colors.white70),
+                            icon: const Icon(Icons.play_arrow, color: Color(0xFF6C63FF)), // 보라색 아이콘
                             onPressed: () async {
                               await _playerService.play(message['audioPath'], () {
                                 print('Playback finished.');
@@ -256,27 +257,25 @@ class _ChatScreenState extends State<ChattingPage> {
     );
   }
 
-
-  // 입력 영역
   Widget _buildMessageInputArea() {
     return Container(
       padding: EdgeInsets.all(10),
-      color: Color(0xFF1F1F1F),
+      color: Colors.white, // 흰색 배경
       child: SafeArea(
         child: Row(
           children: [
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFF333333),
+                  color: Color(0xFFF5F5F5), // 밝은 회색 배경
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
                   controller: _controller,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color(0xFF333333)), // 어두운 회색 텍스트
                   decoration: InputDecoration(
                     hintText: 'Type a message...',
-                    hintStyle: TextStyle(color: Colors.white54),
+                    hintStyle: TextStyle(color: Colors.grey[600]), // 중간 회색 힌트 텍스트
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 20,
@@ -287,22 +286,20 @@ class _ChatScreenState extends State<ChattingPage> {
               ),
             ),
             SizedBox(width: 10),
-            // 녹음 버튼
             CircleAvatar(
-              backgroundColor: Color(0xFF3A6FF7),
+              backgroundColor: Color(0xFF6C63FF), // 보라색
               radius: 25,
               child: IconButton(
                 icon: Icon(
-                  _isListening ? Icons.mic : Icons.mic_none, // 상태에 따라 아이콘 변경
+                  _isListening ? Icons.mic : Icons.mic_none,
                   color: Colors.white,
                 ),
                 onPressed: _isListening ? _stopListening : _startListening,
               ),
             ),
             SizedBox(width: 10),
-            // 보내기 버튼
             CircleAvatar(
-              backgroundColor: Color(0xFF3A6FF7),
+              backgroundColor: Color(0xFF6C63FF), // 보라색
               radius: 25,
               child: IconButton(
                 icon: Icon(Icons.send, color: Colors.white),
@@ -315,3 +312,4 @@ class _ChatScreenState extends State<ChattingPage> {
     );
   }
 }
+

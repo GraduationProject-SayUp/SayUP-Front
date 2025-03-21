@@ -26,8 +26,6 @@ class SignInApp extends StatelessWidget {
     );
   }
 }
-
-
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
 
@@ -41,7 +39,6 @@ class _SignInPageState extends State<SignInPage> {
   final AuthService _authService = AuthService();
 
   bool _isLoading = false;
-
   /// 토큰 저장 메서드
   Future<void> saveToken(String token) async {
     await storage.write(key: 'authToken', value: token);
@@ -95,13 +92,14 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F5F5), // 밝은 회색 배경
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset("assets/images/logo_grayscale_big.png"),
+            Image.asset("assets/images/sayup_image -2.jpg"),
             const SizedBox(height: 26),
             _buildTextField(
               controller: _emailController,
@@ -141,10 +139,12 @@ class _SignInPageState extends State<SignInPage> {
         filled: true,
         fillColor: Colors.white,
         hintText: hintText,
+        hintStyle: TextStyle(color: Colors.grey[600]), // 힌트 텍스트 색상 변경
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
       keyboardType: keyboardType,
     );
@@ -156,11 +156,10 @@ class _SignInPageState extends State<SignInPage> {
       children: [
         const Text(
           "Don't have an account?",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Color(0xFF333333)), // 어두운 회색 텍스트
         ),
         TextButton(
           onPressed: () {
-            // SignUpPage로 이동
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SignUpPage()),
@@ -168,17 +167,11 @@ class _SignInPageState extends State<SignInPage> {
           },
           child: const Text(
             "Sign Up",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xFF6C63FF)), // 보라색 텍스트
           ),
         ),
       ],
     );
   }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 }
+

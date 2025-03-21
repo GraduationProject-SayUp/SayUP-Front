@@ -19,7 +19,6 @@ class _PronunciationPracticePageState
     super.initState();
     _initializeRecorder();
   }
-
   /// 녹음기 초기화
   Future<void> _initializeRecorder() async {
     try {
@@ -54,26 +53,25 @@ class _PronunciationPracticePageState
     _recorderService.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF262626),
+      backgroundColor: Color(0xFFF5F5F5), // 밝은 회색 배경
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
         title: Text(
           'Pronunciation',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF6C63FF), // 보라색 텍스트
             letterSpacing: 1.5,
             fontWeight: FontWeight.w600,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Color(0xFF6C63FF)), // 보라색 아이콘
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white70),
+          icon: Icon(Icons.arrow_back_ios, color: Color(0xFF6C63FF)), // 보라색 아이콘
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -87,7 +85,7 @@ class _PronunciationPracticePageState
               Text(
                 '안녕',
                 style: TextStyle(
-                  color: Color(0xFFFFFFFF),
+                  color: Color(0xFF333333), // 어두운 회색 텍스트
                   fontSize: 52,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
@@ -113,11 +111,11 @@ class _PronunciationPracticePageState
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(0xFF333333),
+        color: Colors.white, // 흰색 배경
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.1), // 부드러운 그림자
             blurRadius: 10,
             offset: Offset(0, 4),
           ),
@@ -131,7 +129,7 @@ class _PronunciationPracticePageState
             Text(
               'Lip Shape Analysis',
               style: TextStyle(
-                color: Color(0xFF4C8BF5),
+                color: Color(0xFF6C63FF), // 보라색 텍스트
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -141,14 +139,14 @@ class _PronunciationPracticePageState
               height: 150,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFF3A3A3A),
+                color: Color(0xFFF5F5F5), // 밝은 회색 배경
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
                 child: Text(
                   'User Lip Shape Feed Here',
                   style: TextStyle(
-                    color: Colors.white54,
+                    color: Color(0xFF666666), // 중간 회색 텍스트
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -170,12 +168,12 @@ class _PronunciationPracticePageState
         shape: BoxShape.circle,
         color: _isRecording
             ? Color(0xFFFF4E4E)  // 밝은 빨간색
-            : Color(0xFF4C8BF5), // 기존 파란색
+            : Color(0xFF6C63FF), // 보라색
         boxShadow: [
           BoxShadow(
             color: _isRecording
                 ? Color(0xFFFF4E4E).withOpacity(0.4)
-                : Color(0xFF4C8BF5).withOpacity(0.4),
+                : Color(0xFF6C63FF).withOpacity(0.4),
             blurRadius: 15,
             offset: Offset(0, 6),
           ),
@@ -202,11 +200,11 @@ class _PronunciationPracticePageState
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(0xFF333333),
+        color: Colors.white, // 흰색 배경
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.1), // 부드러운 그림자
             blurRadius: 10,
             offset: Offset(0, 4),
           ),
@@ -219,7 +217,7 @@ class _PronunciationPracticePageState
             Text(
               'Your Pronunciation Score:',
               style: TextStyle(
-                color: Colors.white,
+                color: Color(0xFF333333), // 어두운 회색 텍스트
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -228,7 +226,7 @@ class _PronunciationPracticePageState
             Text(
               '85%',
               style: TextStyle(
-                color: Colors.greenAccent,
+                color: Color(0xFF00BFA5), // 청록색 텍스트
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
               ),
@@ -238,8 +236,8 @@ class _PronunciationPracticePageState
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
                 value: 0.85,
-                backgroundColor: Colors.grey[800],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                backgroundColor: Colors.grey[300], // 밝은 회색 배경
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF00BFA5)), // 청록색
                 minHeight: 10,
               ),
             ),
@@ -253,11 +251,11 @@ class _PronunciationPracticePageState
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(0xFF333333),
+        color: Colors.white, // 흰색 배경
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.1), // 부드러운 그림자
             blurRadius: 10,
             offset: Offset(0, 4),
           ),
@@ -269,7 +267,7 @@ class _PronunciationPracticePageState
           'Feedback: Your pronunciation is almost perfect! Try to focus on clearer ending sounds.',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.greenAccent,
+            color: Color(0xFF00BFA5), // 청록색 텍스트
             fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
@@ -278,3 +276,4 @@ class _PronunciationPracticePageState
     );
   }
 }
+
